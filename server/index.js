@@ -1,7 +1,11 @@
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
-const ItemModel = require('./models/Item')
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const mongoose = require('mongoose');
+const ItemModel = require('./models/Item');
+
+app.use(cors());
+app.use(express.json())
 
 /// how we establish database connection
 mongoose.connect(
@@ -9,10 +13,13 @@ mongoose.connect(
     { useNewUrlParser: true }
 );
 
-app.get("/insert", async (req, res) => {
-    const item = new ItemModel({name: "Banana", amount: 4});
+app.post("/additem", async (req, res) => {
+    const name = req.body.name
+    const amount = req.body.amount
+
+    const item = new ItemModel({name: name, amount: amount});
     await item.save()
-    res.send('INSERTED DATA');
+    res.send("Success");
 });
 
 app.get("/read", async (req, res) => {
