@@ -11,6 +11,8 @@ function App() {
     Axios.post('http://localhost:3001/additem', {
       name: name, 
       amount: amount 
+    }).then(()=> {
+      setListOfItems([...listOfItems, {name: name, amount: amount}]);
     })
   };
 
@@ -43,14 +45,21 @@ function App() {
 
         <button onClick={addItem}>Add Item</button>
       </div>
-      {listOfItems.map((val)=> {
-        return (
-        <div> 
-          {" "}
-          {val.name}  {val.amount}
-        </div>
-        );
-      })}
+
+      <div className="listOfItems">
+        {listOfItems.map((val) => {
+          return (
+            <div className="itemContainer">
+            <div className="item">
+              <h3>Item: {val.name}</h3>
+              <h3>Amount: {val.amount}</h3>
+            </div>
+            <button>Update</button>
+            <button id="removeButton">X</button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
