@@ -11,10 +11,32 @@ function App() {
     Axios.post('http://localhost:3001/additem', {
       name: name, 
       amount: amount 
-    }).then(()=> {
-      setListOfItems([...listOfItems, {name: name, amount: amount}]);
+    }).then((response)=> {
+      setListOfItems([...listOfItems, 
+        {_id: response.data._id, name: name, amount: amount},
+      ]);
     })
   };
+
+  const updateItem = (id) => {
+    const newAmount = prompt("Enter new amount: ");
+
+    Axios.put('http://localhost:3001/update', { newAmount: newAmount, id: id}).then(() => {
+      setListOfItems(listOfItems.map((val) => {
+        return val._id === id 
+        ? {_id: id, name: val.name, amount: newAmount} 
+        : val
+      }))
+    })
+  };
+
+  const deleteItem = (id) => {
+    Axios.delete(`http://localhost:3001/delete/${id}`).then(()=> {
+      setListOfItems(listOfItems.filter((val)=> {
+        return val._id !== id;
+      }))
+    })
+  }
 
   useEffect(() => {
     Axios.get('http://localhost:3001/read')
@@ -54,8 +76,20 @@ function App() {
               <h3>Item: {val.name}</h3>
               <h3>Amount: {val.amount}</h3>
             </div>
-            <button>Update</button>
-            <button id="removeButton">X</button>
+            <button 
+              onClick={() => {
+                updateItem(val._id);
+              }}
+              >
+                Update
+                </button>
+            <button 
+              id="removeButton"
+              onClick={() => {
+                deleteItem(val._id);
+              }}
+              >
+                X</button>
             </div>
           );
         })}
