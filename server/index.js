@@ -3,13 +3,14 @@ const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const ItemModel = require('./models/Item');
+require('dotenv').config();
 
 app.use(cors());
 app.use(express.json())
 
 /// how we establish database connection
 mongoose.connect(
-    "mongodb://127.0.0.1:27017/mernApp?readPreference=primary&appName=MongoDB%20Compass&ssl=false", 
+    "mongodb+srv://klm4life:mikoandcait2903@mern.vcns2.mongodb.net/mernApp?retryWrites=true&w=majority", 
     { useUnifiedTopology: true, useNewUrlParser: true }
 );
 
@@ -56,6 +57,6 @@ app.delete('/delete/:id', async (req, res) => {
     res.send('item deleted');
 })
 
-app.listen(3001, ()=> {
+app.listen(process.env.PORT || 3001, ()=> {
     console.log('You are connected!');
-})
+});
