@@ -8,7 +8,7 @@ function App() {
   const [listOfItems, setListOfItems] = useState([]);
 
   const addItem = () => {
-    Axios.post('https://grocery-list-mern.herokuapp.com//additem', {
+    Axios.post('https://grocery-list-mern.herokuapp.com/additem', {
       name: name, 
       amount: amount 
     }).then((response)=> {
@@ -21,7 +21,7 @@ function App() {
   const updateItem = (id) => {
     const newAmount = prompt("Enter new amount: ");
 
-    Axios.put('https://grocery-list-mern.herokuapp.com//update', { newAmount: newAmount, id: id}).then(() => {
+    Axios.put('https://grocery-list-mern.herokuapp.com/update', { newAmount: newAmount, id: id}).then(() => {
       setListOfItems(listOfItems.map((val) => {
         return val._id === id 
         ? {_id: id, name: val.name, amount: newAmount} 
@@ -31,7 +31,7 @@ function App() {
   };
 
   const deleteItem = (id) => {
-    Axios.delete(`https://grocery-list-mern.herokuapp.com//delete/${id}`).then(()=> {
+    Axios.delete(`https://grocery-list-mern.herokuapp.com/delete/${id}`).then(()=> {
       setListOfItems(listOfItems.filter((val)=> {
         return val._id !== id;
       }))
@@ -39,7 +39,7 @@ function App() {
   }
 
   useEffect(() => {
-    Axios.get('https://grocery-list-mern.herokuapp.com//read')
+    Axios.get('https://grocery-list-mern.herokuapp.com/read')
     .then((response) => {
       setListOfItems(response.data)
     })
